@@ -3,7 +3,7 @@
 import os, json, time
 from bs4 import BeautifulSoup
 from urllib2 import urlopen, Request, URLError, HTTPError
-from music_board import NeteaseBoard
+
 
 def make_soup(url, filename='undefined', persist=False):
     """
@@ -49,12 +49,4 @@ def crawl_music_toplist(board):
             print 'Cannot make soup for url:', url
             continue
         board.parse_webpage(soup)
-        
-
-  
-if __name__ == "__main__":
-    # NetEase Cloud Music
-    netease = NeteaseBoard()
-    crawl_music_toplist(netease)
-
 
