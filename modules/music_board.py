@@ -23,7 +23,7 @@ class NeteaseBoard(object):
             try:
                 album = unicode(song["album"]["name"])
             except Exception, e:
-                album = u'Unknown'            
+                album = u'Unknown'
             for artist in song["artists"]:
                 artists.append(unicode(artist["name"]))
 
@@ -34,11 +34,12 @@ class NeteaseBoard(object):
         return music_dict
 
     def parse_webpage(self, soup, debug=False):
-        mlist = MusicList()
-        mlist.title = unicode(soup.title.string)
+        title = unicode(soup.title.string)
+        mlist = MusicList(title)
         print 'Music Toplist:', mlist.title
+
         music_dict = self.get_music_info(soup)
-        
+
         if debug:
             for k, v in music_dict.iteritems():
                 v.display()
@@ -47,8 +48,8 @@ class NeteaseBoard(object):
             name = unicode(music.stirng)
             id = int(music["href"].split("=")[-1])
             mlist.songs.append(music_dict[id])
-        # print soup.select('a[href^="/song?id="]')
 
+        mlist.update()
         for song in mlist.songs:
             song.display()
 

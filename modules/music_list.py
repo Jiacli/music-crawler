@@ -2,10 +2,17 @@
 
 class MusicList(object):
 
-    def __init__(self):
-        self.title = None
+    def __init__(self, title='Unknown Title'):
+        self.title = title
         self.size = 0
-        self.songs = []        
+        self.songs = []
+
+    def update(self):
+        self.size = len(self.songs)
+        rank = 1
+        for song in self.songs:
+            song.rank = rank
+            rank += 1
 
 
 class Song(object):
@@ -18,7 +25,7 @@ class Song(object):
         self.rank = -1
 
     def display(self):
-        item = u'Name: {0}; Artists: {1}; Album: {2}; ID: {3}'.format(
-            self.name, ','.join(self.artists), self.album, self.id)
+        item = u'No.{0} {1}({2}) - {3}'.format(self.rank, self.name,
+            ','.join(self.artists), self.album)
         print item.encode("utf-8")
 
