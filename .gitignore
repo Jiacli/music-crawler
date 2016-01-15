@@ -1,6 +1,9 @@
-
 # Mac
 .DS_Store
+
+# Folder
+raw_webpages/
+parsed_data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
