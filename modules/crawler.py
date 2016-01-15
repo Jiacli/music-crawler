@@ -38,15 +38,15 @@ def make_soup(url, filename='undefined', persist=False):
     else:
         return BeautifulSoup(data)
 
-  
+
 def crawl_music_toplist(board):
     base_url = board.base_url
-    for seed in board.seeds:
+    for seed in board.seeds.keys():
         url = base_url + str(seed)
         print 'crawling:', url
         soup = make_soup(url, filename=board.prefix+str(seed))
         if soup is None:
             print 'Cannot make soup for url:', url
             continue
-        board.parse_webpage(soup)
+        board.parse_webpage(soup, seed)
 
