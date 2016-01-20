@@ -4,10 +4,9 @@ import os, json, time
 from bs4 import BeautifulSoup
 from urllib2 import urlopen, Request, URLError, HTTPError
 
-
-def make_soup(url, filename='undefined', persist=False):
+def request_url(url):
     """
-    Open URL with dummy headers and create BeautifulSoup object
+    Open URL with dummy headers
     """
     dummy_header = {
         'Connection': 'Keep-Alive',
@@ -20,29 +19,38 @@ def make_soup(url, filename='undefined', persist=False):
     }
 
     try:
-        if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                data = f.read()
-        else:
-            req = Request(url, headers=dummy_header)
-            response = urlopen(req)
-            data = response.read()
-            # write to file for analysis
-            with open(filename, 'w') as f:
-                f.write(data)
+        req = Request(url, headers=dummy_header)
+        response = urlopen(req)
+        data = response.read()
     except URLError, e:
         if hasattr(e, 'code'):
             print 'Error code:', e.code, '. Cannot finish request.'
         elif hasattr(e, 'reason'):
             print 'Request failed:', e.reason, 'Cannot connect to server.'
     else:
-        return BeautifulSoup(data)
+        return data
+
+
+def make_soup(url, filename='undefined', persist=False):
+    """
+    Create BeautifulSoup object for requested URL
+    """
+
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            data = f.read()
+    else:
+        data = request_url(url)
+        # write to file for analysis
+        with open(filename, 'w') as f:
+            f.write(data)
+
+    return BeautifulSoup(data)
 
 
 def crawl_music_toplist(board):
-    base_url = board.base_url
     for seed in board.seeds.keys():
-        url = base_url + str(seed)
+        url = board.get_req_url(seed)
         print 'crawling:', url
         soup = make_soup(url, filename=board.prefix+str(seed))
         if soup is None:
