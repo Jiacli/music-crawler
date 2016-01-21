@@ -4,6 +4,13 @@ import os, json, time
 from bs4 import BeautifulSoup
 from urllib2 import urlopen, Request, URLError, HTTPError
 
+def make_url(url_base, params):
+    params_list = []
+    for k, v in params.iteritems():
+        params_list.append('{0}={1}'.format(k, v))
+    return url_base + '&'.join(params_list)
+
+
 def request_url(url):
     """
     Open URL with dummy headers
@@ -36,7 +43,7 @@ def make_soup(url, filename='undefined', persist=False):
     Create BeautifulSoup object for requested URL
     """
 
-    if os.path.exists(filename):
+    if 0: #os.path.exists(filename):
         with open(filename, 'r') as f:
             data = f.read()
     else:

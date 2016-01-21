@@ -25,7 +25,7 @@ class MusicList(object):
         filename = u'{0}{1} ({2}).tsv'.format(path, self.title, self.timestamp)
 
         if os.path.exists(filename):
-            print 'File {0} already exists.'
+            print u'File {0} already exists.'.format(filename)
             return
 
         with open(filename, 'w') as f:
